@@ -23,7 +23,7 @@ const char O_BRACKET = '(';
 const char C_BRACKET = ')';
 const std::string CONST = "val";
 const std::string VAR = "var";
-const std::string SPACES = " \t\r\n";
+const std::string SPACES = " \t\r";
 //};
 
 #endif //KPHPVK_CONSTATNS_H

@@ -26,6 +26,7 @@ public:
         Semicolon,
         SingleQuote,
         DoubleQuote,
+        NewLine,
         End,
         Unexpected,
     };
