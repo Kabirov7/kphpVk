@@ -3,4 +3,4 @@ project(kphpVk)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(kphpVk main.cpp)
+add_executable(kphpVk source/main.cpp source/Lexer.cpp source/Lexer.h source/Constatns.h)
