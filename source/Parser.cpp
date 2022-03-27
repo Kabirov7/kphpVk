@@ -4,12 +4,12 @@
 
 #include <iostream>
 #include "Parser.h"
-#include <stack>
+#include <queue>
 
 
 void Parser::parser() {
-    stack<Token> operators;
-    stack<Token> operands;
+    queue<Token> operators;
+    queue<Token> operands;
 
     while (currentToken.getType() != Token::Type::End && currentToken.getType() != Token::Type::Unexpected) {
         Token::Type currentType = currentToken.getType();
@@ -18,10 +18,10 @@ void Parser::parser() {
             std::string_view lexeme = currentToken.getLexeme();
 
             if (operators.empty() ||
-                getPriority(operators.top().getLexeme()[0]) > getPriority(currentToken.getLexeme()[0]) || operators.top().getLexeme() == currentToken.getLexeme() ) {
+                getPriority(operators.front().getLexeme()[0]) > getPriority(currentToken.getLexeme()[0]) || operators.front().getLexeme() == currentToken.getLexeme() ) {
                 if (currentType == Token::Type::RightParen) {
-                    while (operators.top().getType() != Token::Type::LeftParen) {
-                        operands.push(operators.top());
+                    while (operators.front().getType() != Token::Type::LeftParen) {
+                        operands.push(operators.front());
                         operators.pop();
                     }
                     operators.pop();
@@ -30,8 +30,8 @@ void Parser::parser() {
                 }
 
             } else {
-                if (operators.top().getType() != Token::Type::LeftParen) {
-                    operands.push(operators.top());
+                if (operators.front().getType() != Token::Type::LeftParen) {
+                    operands.push(operators.front());
                     operators.pop();
                     operators.push(currentToken);
                 } else {
@@ -48,13 +48,13 @@ void Parser::parser() {
 
     int t = operators.size();
     for (int i = 0; i < t; ++i) {
-        operands.push(operators.top());
+        operands.push(operators.front());
         operators.pop();
     }
 
     t = operands.size();
     for (int i = 0; i < t; ++i) {
-        cout<<operands.top().getLexeme()<< " " ;
+        cout<<operands.front().getLexeme()<< " " ;
         operands.pop();
     }
 
