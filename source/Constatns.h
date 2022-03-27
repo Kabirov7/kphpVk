@@ -27,6 +27,8 @@ const char O_BRACKET = '(';
 const char C_BRACKET = ')';
 const std::string CONST = "val";
 const std::string VAR = "var";
+const std::string PRINT = "print";
+const std::string INPUT = "input";
 const std::string SPACES = " \t\r";
 
 

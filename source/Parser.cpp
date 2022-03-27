@@ -8,9 +8,12 @@
 #include <stack>
 
 
-queue<Token> Parser::parser() {
-    queue<Token> operators;
-    queue<Token> operands;
+#include <stack>
+
+
+stack<Token> Parser::parser() {
+    stack<Token> operators;
+    stack<Token> operands;
 
     while (currentToken.getType() != Token::Type::End && currentToken.getType() != Token::Type::Unexpected) {
         Token::Type currentType = currentToken.getType();
@@ -19,11 +22,10 @@ queue<Token> Parser::parser() {
             std::string_view lexeme = currentToken.getLexeme();
 
             if (operators.empty() ||
-                getPriority(operators.front().getLexeme()[0]) > getPriority(currentToken.getLexeme()[0]) ||
-                operators.front().getLexeme() == currentToken.getLexeme()) {
+                getPriority(operators.top().getLexeme()[0]) > getPriority(currentToken.getLexeme()[0]) || operators.top().getLexeme() == currentToken.getLexeme() ) {
                 if (currentType == Token::Type::RightParen) {
-                    while (operators.front().getType() != Token::Type::LeftParen) {
-                        operands.push(operators.front());
+                    while (operators.top().getType() != Token::Type::LeftParen) {
+                        operands.push(operators.top());
                         operators.pop();
                     }
                     operators.pop();
@@ -32,8 +34,8 @@ queue<Token> Parser::parser() {
                 }
 
             } else {
-                if (operators.front().getType() != Token::Type::LeftParen) {
-                    operands.push(operators.front());
+                if (operators.top().getType() != Token::Type::LeftParen) {
+                    operands.push(operators.top());
                     operators.pop();
                     operators.push(currentToken);
                 } else {
@@ -50,10 +52,17 @@ queue<Token> Parser::parser() {
 
     int t = operators.size();
     for (int i = 0; i < t; ++i) {
-        operands.push(operators.front());
+        operands.push(operators.top());
         operators.pop();
     }
-    calculating(operands);
+
+    t = operands.size();
+    for (int i = 0; i < t; ++i) {
+        cout<<operands.top().getLexeme()<< " " ;
+        operands.pop();
+    }
+
+    cout << endl << "DONE" << endl;
     return operands;
 }
 

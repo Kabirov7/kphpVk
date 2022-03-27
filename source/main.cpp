@@ -14,14 +14,14 @@ std::ostream &operator<<(std::ostream &os, const Token::Type &type) {
             "Number", "Identifier", "LeftParen", "RightParen", "Equal", "Plus",
             "Minus", "Asterisk", "Slash", "Dot", "Comma", "Colon",
             "Semicolon", "SingleQuote", "DoubleQuote", "NewLine", "Percent",
-            "Pow", "String", "End", "Unexpected"
+            "Pow", "String", "Variable", "Const", "End", "Unexpected"
     };
     return os << names[static_cast<int>(type)];
 }
 
 
 int main() {
-    char c[] = "\"first second \" + 324";
+    char c[] = "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3";
     vector<Token> *tokens = new vector<Token>();
     Lexer l = Lexer(c);
 //    for (auto token = l.next();

@@ -30,6 +30,10 @@ public:
         Percent,
         Pow,
         String,
+        Variable,
+        Const,
+        Print,
+        Input,
         End,
         Unexpected,
     };

@@ -2,8 +2,6 @@
 // Created by Artur Kabirov on 26/3/22.
 //
 
-#include <cstring>
-#include "iostream"
 #include "Lexer.h"
 #include "Constatns.h"
 
@@ -152,7 +150,20 @@ Token Lexer::identifier() noexcept {
     const char *start = m_beg;
     get();
     while (isIdentifierChar(peek()))get();
-    return Token(Token::Type::Identifier, start, m_beg);
+    Token token = Token(Token::Type::Identifier, start, m_beg);
+    if (token.getLexeme() == VAR){
+        token.setType(Token::Type::Variable);
+    } else if (token.getLexeme() == CONST){
+        token.setType(Token::Type::Const);
+
+    } else if (token.getLexeme() == PRINT){
+        token.setType(Token::Type::Print);
+
+    } else if (token.getLexeme() == INPUT){
+        token.setType(Token::Type::Input);
+    }
+
+    return token;
 }
 
 Token Lexer::number() noexcept {

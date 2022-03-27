@@ -10,6 +10,7 @@
 #include "Lexer.h"
 #include "AST.h"
 #include <queue>
+#include <stack>
 
 
 class Parser {
@@ -47,7 +48,7 @@ private:
 public:
     Parser(const Lexer &lexer, const Token &currentToken);
 
-    queue<Token> parser();
+    stack<Token> parser();
 
     void calculating(queue<Token> tokens);
 };
