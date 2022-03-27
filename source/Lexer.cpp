@@ -134,6 +134,10 @@ Token Lexer::next() noexcept {
             return atom(Token::Type::DoubleQuote);
         case '\n':
             return atom(Token::Type::NewLine);
+        case '^':
+            return atom(Token::Type::Pow);
+        case '%':
+            return atom(Token::Type::Percent);
         default:
             return atom(Token::Type::Unexpected);
 

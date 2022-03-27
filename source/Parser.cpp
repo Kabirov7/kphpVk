@@ -4,4 +4,74 @@
 
 #include <iostream>
 #include "Parser.h"
+#include <stack>
 
+
+void Parser::parser() {
+    stack<Token> operators;
+    stack<Token> operands;
+
+    while (currentToken.getType() != Token::Type::End && currentToken.getType() != Token::Type::Unexpected) {
+        Token::Type currentType = currentToken.getType();
+
+        if (IsOperator(currentType)) {
+            std::string_view lexeme = currentToken.getLexeme();
+
+            if (operators.empty() ||
+                getPriority(operators.top().getLexeme()[0]) > getPriority(currentToken.getLexeme()[0]) || operators.top().getLexeme() == currentToken.getLexeme() ) {
+                if (currentType == Token::Type::RightParen) {
+                    while (operators.top().getType() != Token::Type::LeftParen) {
+                        operands.push(operators.top());
+                        operators.pop();
+                    }
+                    operators.pop();
+                } else {
+                    operators.push(currentToken);
+                }
+
+            } else {
+                if (operators.top().getType() != Token::Type::LeftParen) {
+                    operands.push(operators.top());
+                    operators.pop();
+                    operators.push(currentToken);
+                } else {
+                    operators.push(currentToken);
+                }
+
+            }
+
+        } else if (currentType == Token::Type::Number) {
+            operands.push(currentToken);
+        }
+        currentToken = lexer.next();
+    }
+
+    int t = operators.size();
+    for (int i = 0; i < t; ++i) {
+        operands.push(operators.top());
+        operators.pop();
+    }
+
+    t = operands.size();
+    for (int i = 0; i < t; ++i) {
+        cout<<operands.top().getLexeme()<< " " ;
+        operands.pop();
+    }
+
+    cout << endl << "DONE" << endl;
+}
+
+bool Parser::IsOperator(Token::Type t) {
+    if (t == Token::Type::Plus || t == Token::Type::Minus || t == Token::Type::Slash ||
+        t == Token::Type::Asterisk || t == Token::Type::Pow || t == Token::Type::Percent ||
+        t == Token::Type::LeftParen || t == Token::Type::RightParen) {
+        return true;
+    }
+    return false;
+}
+
+Parser::Parser(const Lexer &lexer, const Token &currentToken) : lexer(lexer), currentToken(currentToken) {}
+
+short Parser::getPriority(char c) {
+    return PRIORITIES.find(c)->second;
+}

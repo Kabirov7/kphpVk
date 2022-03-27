@@ -13,6 +13,8 @@ const char PLUS = '+';
 const char MINUS = '-';
 const char DIVISION = '\\';
 const char MULTIPLICATION = '*';
+const char POW = '^';
+const char PERCENT = '%';
 const char EQUAL = '=';
 const char SPACE = ' ';
 const char TAB = '\t';
@@ -26,16 +28,6 @@ const char C_BRACKET = ')';
 const std::string CONST = "val";
 const std::string VAR = "var";
 const std::string SPACES = " \t\r";
-std::map<char, short> PRIORITIES = {
-        { ')', 2 },
-        { '(', 2 },
-        { '*', 5 },
-        { '/', 5 },
-        { '%', 5 },
-        { '-', 6 },
-        { '+', 6 },
-        { '=', 16 },
-        { ',', 17 }
-};
+
 
 #endif //KPHPVK_CONSTATNS_H

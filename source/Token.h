@@ -27,6 +27,8 @@ public:
         SingleQuote,
         DoubleQuote,
         NewLine,
+        Percent,
+        Pow,
         End,
         Unexpected,
     };
