@@ -12,6 +12,7 @@ class Token {
 public:
     enum class Type {
         Number,
+        Float,
         Identifier,
         LeftParen,
         RightParen,

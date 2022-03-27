@@ -11,7 +11,7 @@ using namespace std;
 
 std::ostream &operator<<(std::ostream &os, const Token::Type &type) {
     static const char *const names[]{
-            "Number", "Identifier", "LeftParen", "RightParen", "Equal", "Plus",
+            "Number", "Float", "Identifier", "LeftParen", "RightParen", "Equal", "Plus",
             "Minus", "Asterisk", "Slash", "Dot", "Comma", "Colon",
             "Semicolon", "SingleQuote", "DoubleQuote", "NewLine", "Percent",
             "Pow", "String", "Variable", "Const", "End", "Unexpected"
@@ -21,7 +21,7 @@ std::ostream &operator<<(std::ostream &os, const Token::Type &type) {
 
 
 int main() {
-    char c[] = "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3";
+    char c[] = "3 * ( 1 + 5 )";
     vector<Token> *tokens = new vector<Token>();
     Lexer l = Lexer(c);
 //    for (auto token = l.next();

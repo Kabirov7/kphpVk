@@ -34,7 +34,27 @@ private:
 
     short getPriority(char);
 
-    vector<Token> preparing();
+    bool IsStrAndStr(Token left, Token right){
+        return left.is(Token::Type::String) && right.is(Token::Type::String);
+    }
+    bool IsStrAndNum(Token left, Token right){
+        return left.is(Token::Type::String) && right.is(Token::Type::Number);
+    }
+    bool IsStrAndFloat(Token left, Token right){
+        return left.is(Token::Type::String) && right.is(Token::Type::Float);
+    }
+
+    bool IsNumAndNum(Token left, Token right){
+        return left.is(Token::Type::Number) && right.is(Token::Type::Number);
+    }
+    bool IsNumAndFloat(Token left, Token right){
+        return left.is(Token::Type::Number) && right.is(Token::Type::Float);
+    }
+
+    bool IsFloatAndFloat(Token left, Token right){
+        return left.is(Token::Type::Float) && right.is(Token::Type::Float);
+    }
+
 
 //    String + Int/Float число преобразуется в строку
 //    "Hello" + "!" => "Hello!"
@@ -44,13 +64,35 @@ private:
 //    "134" - 42 = 92
 //    "134" + 42 = 13442
 //    Float (+, -) Int целое число преобразуется в дробное.
+    Token StrPlusIntOrFloat(Token l, Token r){
+        string str = "";
+        str +=l.getLexeme();
+        str += r.getLexeme();
+        return Token(Token::Type::String, str);
+    }
+
+    Token StrMinusIntOrFloat(Token l, Token r);
+
+    Token IntOrFloatMinusIntOrFloat(Token l, Token r);
+
+    Token IntOrFloatPlusIntOrFloat(Token l, Token r);
+
+    Token IntOrFloatMultIntOrFloat(Token l, Token r);
+
+    Token IntOrFloatDivIntOrFloat(Token l, Token r);
+
+    Token IntOrFloatPowIntOrFloat(Token l, Token r);
+
+    Token IntOrFloatPercIntOrFloat(Token l, Token r);
+
+    Token Assignee(Token l, Token r);
 
 public:
     Parser(const Lexer &lexer, const Token &currentToken);
 
     stack<Token> parser();
 
-    void calculating(queue<Token> tokens);
+    void calculating(stack<Token> tokens);
 };
 
 

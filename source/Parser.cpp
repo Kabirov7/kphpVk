@@ -22,7 +22,8 @@ stack<Token> Parser::parser() {
             std::string_view lexeme = currentToken.getLexeme();
 
             if (operators.empty() ||
-                getPriority(operators.top().getLexeme()[0]) > getPriority(currentToken.getLexeme()[0]) || operators.top().getLexeme() == currentToken.getLexeme() ) {
+                getPriority(operators.top().getLexeme()[0]) > getPriority(currentToken.getLexeme()[0]) ||
+                operators.top().getLexeme() == currentToken.getLexeme()) {
                 if (currentType == Token::Type::RightParen) {
                     while (operators.top().getType() != Token::Type::LeftParen) {
                         operands.push(operators.top());
@@ -58,12 +59,12 @@ stack<Token> Parser::parser() {
 
     t = operands.size();
     for (int i = 0; i < t; ++i) {
-        cout<<operands.top().getLexeme()<< " " ;
+        operators.push(operands.top());
         operands.pop();
     }
 
-    cout << endl << "DONE" << endl;
-    return operands;
+    calculating(operators);
+    return operators;
 }
 
 bool Parser::IsOperator(Token::Type t) {
@@ -81,33 +82,125 @@ short Parser::getPriority(char c) {
     return PRIORITIES.find(c)->second;
 }
 
-void Parser::calculating(queue<Token> tokens) {
+void Parser::calculating(stack<Token> tokens) {
     stack<Token> counted;
-    int t = tokens.size();
-    for (int i = 0; i < t; ++i) {
-        cout << tokens.front().getLexeme() << " ";
-        tokens.pop();
-    }
-//    Token token = tokens.front();
-    /*while (tokens.front().getType() != Token::Type::End && tokens.front().getType() != Token::Type::Unexpected){
-        if (token.is(Token::Type::Number) ){
-            counted.push(token);
-        } else if (IsOperator(token.getType())){
-            switch (token.getType()) {
-                case Token::Type::Plus:
 
-                case Token::Type::Minus:
-                case Token::Type::Asterisk:
-                case Token::Type::Slash:
-                case Token::Type::Percent:
-                case Token::Type::Pow:
+    while (tokens.size() > 0) {
+        Token currentToken = tokens.top();
+        if (IsOperator(currentToken.getType())) {
+            tokens.pop();
+            switch (currentToken.getType()) {
+                case Token::Type::Plus: {
+                    Token rightToken = counted.top();
+                    counted.pop();
+                    Token leftToken = counted.top();
+                    counted.pop();
+                    if (IsStrAndStr(leftToken, rightToken)) {
+                        cout << "str + str" << endl;
+                    } else if (IsStrAndNum(leftToken, rightToken) || IsStrAndFloat(leftToken, rightToken)) {
+                        cout << "str + int/float" << endl;
+                    } else if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
+                               IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
+                        leftToken = IntOrFloatPlusIntOrFloat(leftToken, rightToken);
+                        cout << "int/float + int/float" << endl;
+                    } else {
+                        cout << "ERROR PLUS" << endl;
+                    }
+                    counted.push(leftToken);
+                    break;
+                }
+                case Token::Type::Minus: {
+                    Token rightToken = counted.top();
+                    counted.pop();
+                    Token leftToken = counted.top();
+                    counted.pop();
+                    if (IsStrAndNum(leftToken, rightToken) || IsStrAndFloat(leftToken, rightToken)) {
+                        cout << "str - int/float" << endl;
+                        leftToken = StrMinusIntOrFloat(leftToken, rightToken);
+                    } else if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
+                               IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
+                        cout << "int/float - int/float" << endl;
+                        leftToken = IntOrFloatMinusIntOrFloat(leftToken, rightToken);
+                    } else {
+                        cout << "ERROR MINUS" << endl;
+                    }
+                    counted.push(leftToken);
+                    break;
+                }
+                case Token::Type::Slash: {
+                    Token rightToken = counted.top();
+                    counted.pop();
+                    Token leftToken = counted.top();
+                    counted.pop();
+                    if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
+                        IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
+                        cout << "int/float / int/float" << endl;
+                        leftToken = IntOrFloatDivIntOrFloat(leftToken, rightToken);
+                    } else {
+                        cout << "ERROR MINUS" << endl;
+                    }
+                    counted.push(leftToken);
+                    break;
+                }
+                case Token::Type::Asterisk: {
+                    Token rightToken = counted.top();
+                    counted.pop();
+                    Token leftToken = counted.top();
+                    counted.pop();
+                    if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
+                        IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
+                        cout << "int/float * int/float" << endl;
+                        leftToken = IntOrFloatMultIntOrFloat(leftToken, rightToken);
+                    } else {
+                        cout << "ERROR ASTERISK" << endl;
+                    }
+                    break;
+                }
+                case Token::Type::Percent: {
+                    Token rightToken = counted.top();
+                    counted.pop();
+                    Token leftToken = counted.top();
+                    counted.pop();
+                    if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
+                        IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
+                        cout << "int/float % int/float" << endl;
+                        leftToken = IntOrFloatPercIntOrFloat(leftToken, rightToken);
+                    } else {
+                        cout << "ERROR PERCENT" << endl;
+                    }
+                    counted.push(leftToken);
+                    break;
+                }
+                case Token::Type::Pow: {
+                    Token rightToken = counted.top();
+                    counted.pop();
+                    Token leftToken = counted.top();
+                    counted.pop();
+                    if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
+                        IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
+                        cout << "int/float ^ int/float" << endl;
+                        leftToken = IntOrFloatPowIntOrFloat(leftToken, rightToken);
+                    } else {
+                        cout << "ERROR POW" << endl;
+                    }
+                    counted.push(leftToken);
+                    break;
+                }
+                case Token::Type::Equal: {
+                    Token rightToken = counted.top();
+                    counted.pop();
+                    Token leftToken = counted.top();
+                    counted.pop();
+                    leftToken = Assignee(leftToken, rightToken);
+                    break;
+                }
                 default:
+                    cout << "ERROR" << endl;
                     break;
             }
-            token = tokens.front();
+        } else {
+            counted.push(currentToken);
             tokens.pop();
-
         }
-
-    }*/
+    }
 }
