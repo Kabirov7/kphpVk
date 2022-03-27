@@ -6,6 +6,8 @@
 #define KPHPVK_CONSTATNS_H
 
 #include <string>
+#include <unordered_map>
+#include <map>
 
 const char PLUS = '+';
 const char MINUS = '-';
@@ -24,6 +26,16 @@ const char C_BRACKET = ')';
 const std::string CONST = "val";
 const std::string VAR = "var";
 const std::string SPACES = " \t\r";
-//};
+std::map<char, short> PRIORITIES = {
+        { ')', 2 },
+        { '(', 2 },
+        { '*', 5 },
+        { '/', 5 },
+        { '%', 5 },
+        { '-', 6 },
+        { '+', 6 },
+        { '=', 16 },
+        { ',', 17 }
+};
 
 #endif //KPHPVK_CONSTATNS_H

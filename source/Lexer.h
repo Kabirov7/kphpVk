@@ -15,7 +15,6 @@ public:
 private:
     Token identifier() noexcept;
     Token number() noexcept;
-    Token slash_or_comment() noexcept;
     Token atom(Token::Type) noexcept;
 
     char peek() const noexcept;
