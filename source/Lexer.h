@@ -21,7 +21,6 @@ private:
     char get() noexcept;
 
     const char *m_beg = nullptr;
-    vector<Token> tokens;
 
 };
 

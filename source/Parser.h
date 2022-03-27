@@ -33,6 +33,8 @@ private:
 
     short getPriority(char);
 
+    vector<Token> preparing();
+
 //    String + Int/Float число преобразуется в строку
 //    "Hello" + "!" => "Hello!"
 //    "Hello" + "43" => "Hello43"

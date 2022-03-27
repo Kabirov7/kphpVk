@@ -14,28 +14,23 @@ std::ostream &operator<<(std::ostream &os, const Token::Type &type) {
             "Number", "Identifier", "LeftParen", "RightParen", "Equal", "Plus",
             "Minus", "Asterisk", "Slash", "Dot", "Comma", "Colon",
             "Semicolon", "SingleQuote", "DoubleQuote", "NewLine", "Percent",
-            "Pow","End", "Unexpected"
+            "Pow", "String", "End", "Unexpected"
     };
     return os << names[static_cast<int>(type)];
 }
 
 
 int main() {
-    char c[] = "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3";
-    vector<Token> * tokens = new vector<Token>();
+    char c[] = "\"first second \" + 324";
+    vector<Token> *tokens = new vector<Token>();
     Lexer l = Lexer(c);
 //    for (auto token = l.next();
-//        not token.is_one_of(Token::Type::End, Token::Type::Unexpected);
-//        token = l.next())
+//         not token.is_one_of(Token::Type::End, Token::Type::Unexpected);
+//         token = l.next())
+//        cout << token.getType() << "|" << token.getLexeme() << "|" << endl;
 //        tokens->push_back(token);
+
     Parser p = Parser(l, l.next());
     p.parser();
-    /*Token mul_token = Token(Token::Type::Asterisk, "*");
-    Token plus_token = Token(Token::Type::Plus, "+");
-    ASTNode *o1 = new ASTNode(Token(Token::Type::Number, "2"));
-    ASTNode *o2 = new ASTNode(Token(Token::Type::Number, "7"));
-    ASTNode *o3 = new ASTNode(Token(Token::Type::Number, "3"));
-    ASTNode *mul_node = new ASTNode(mul_token, o1, o2);
-    ASTNode *add_node = new ASTNode(plus_token, mul_node, o3);*/
     return 0;
 }

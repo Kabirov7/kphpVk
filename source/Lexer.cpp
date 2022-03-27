@@ -130,8 +130,12 @@ Token Lexer::next() noexcept {
             return atom(Token::Type::Semicolon);
         case '\'':
             return atom(Token::Type::SingleQuote);
-        case '"':
-            return atom(Token::Type::DoubleQuote);
+        case '"': {
+            const char *start = m_beg;
+            get();
+            while (peek()!='"')get();
+            return Token(Token::Type::String, start+1, m_beg++);
+        }
         case '\n':
             return atom(Token::Type::NewLine);
         case '^':

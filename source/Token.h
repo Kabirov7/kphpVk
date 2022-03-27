@@ -29,6 +29,7 @@ public:
         NewLine,
         Percent,
         Pow,
+        String,
         End,
         Unexpected,
     };

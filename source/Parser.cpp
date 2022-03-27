@@ -19,7 +19,8 @@ queue<Token> Parser::parser() {
             std::string_view lexeme = currentToken.getLexeme();
 
             if (operators.empty() ||
-                getPriority(operators.front().getLexeme()[0]) > getPriority(currentToken.getLexeme()[0]) || operators.front().getLexeme() == currentToken.getLexeme() ) {
+                getPriority(operators.front().getLexeme()[0]) > getPriority(currentToken.getLexeme()[0]) ||
+                operators.front().getLexeme() == currentToken.getLexeme()) {
                 if (currentType == Token::Type::RightParen) {
                     while (operators.front().getType() != Token::Type::LeftParen) {
                         operands.push(operators.front());
@@ -41,7 +42,7 @@ queue<Token> Parser::parser() {
 
             }
 
-        } else if (currentType == Token::Type::Number) {
+        } else {
             operands.push(currentToken);
         }
         currentToken = lexer.next();
@@ -73,7 +74,12 @@ short Parser::getPriority(char c) {
 
 void Parser::calculating(queue<Token> tokens) {
     stack<Token> counted;
-    Token token = tokens.front();
+    int t = tokens.size();
+    for (int i = 0; i < t; ++i) {
+        cout << tokens.front().getLexeme() << " ";
+        tokens.pop();
+    }
+//    Token token = tokens.front();
     /*while (tokens.front().getType() != Token::Type::End && tokens.front().getType() != Token::Type::Unexpected){
         if (token.is(Token::Type::Number) ){
             counted.push(token);
