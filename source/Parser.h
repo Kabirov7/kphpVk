@@ -9,6 +9,7 @@
 #include <map>
 #include "Lexer.h"
 #include "AST.h"
+#include <queue>
 
 
 class Parser {
@@ -31,10 +32,22 @@ private:
     bool IsOperator(Token::Type);
 
     short getPriority(char);
+
+//    String + Int/Float число преобразуется в строку
+//    "Hello" + "!" => "Hello!"
+//    "Hello" + "43" => "Hello43"
+//    String - Int/Float строка преобразуется в целое или дробное число, а если строка не является числовой (2) то будто бы она "0" .
+//    "World" - 42 = -42
+//    "134" - 42 = 92
+//    "134" + 42 = 13442
+//    Float (+, -) Int целое число преобразуется в дробное.
+
 public:
     Parser(const Lexer &lexer, const Token &currentToken);
 
-    void parser();
+    queue<Token> parser();
+
+    void calculating(queue<Token> tokens);
 };
 
 

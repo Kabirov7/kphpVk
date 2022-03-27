@@ -5,9 +5,10 @@
 #include <iostream>
 #include "Parser.h"
 #include <queue>
+#include <stack>
 
 
-void Parser::parser() {
+queue<Token> Parser::parser() {
     queue<Token> operators;
     queue<Token> operands;
 
@@ -51,14 +52,8 @@ void Parser::parser() {
         operands.push(operators.front());
         operators.pop();
     }
-
-    t = operands.size();
-    for (int i = 0; i < t; ++i) {
-        cout<<operands.front().getLexeme()<< " " ;
-        operands.pop();
-    }
-
-    cout << endl << "DONE" << endl;
+    calculating(operands);
+    return operands;
 }
 
 bool Parser::IsOperator(Token::Type t) {
@@ -74,4 +69,30 @@ Parser::Parser(const Lexer &lexer, const Token &currentToken) : lexer(lexer), cu
 
 short Parser::getPriority(char c) {
     return PRIORITIES.find(c)->second;
+}
+
+void Parser::calculating(queue<Token> tokens) {
+    stack<Token> counted;
+    Token token = tokens.front();
+    /*while (tokens.front().getType() != Token::Type::End && tokens.front().getType() != Token::Type::Unexpected){
+        if (token.is(Token::Type::Number) ){
+            counted.push(token);
+        } else if (IsOperator(token.getType())){
+            switch (token.getType()) {
+                case Token::Type::Plus:
+
+                case Token::Type::Minus:
+                case Token::Type::Asterisk:
+                case Token::Type::Slash:
+                case Token::Type::Percent:
+                case Token::Type::Pow:
+                default:
+                    break;
+            }
+            token = tokens.front();
+            tokens.pop();
+
+        }
+
+    }*/
 }
