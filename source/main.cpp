@@ -21,7 +21,7 @@ std::ostream &operator<<(std::ostream &os, const Token::Type &type) {
 
 
 int main() {
-    char c[] = "3 * ( 1 + 5 )";
+    char c[] = "\"34.3324\" - 324.3";
     vector<Token> *tokens = new vector<Token>();
     Lexer l = Lexer(c);
 //    for (auto token = l.next();

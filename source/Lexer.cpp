@@ -170,6 +170,12 @@ Token Lexer::number() noexcept {
     const char *start = m_beg;
     get();
     while (isDigit(peek())) get();
+    if (peek()=='.') {
+        get();
+        while (isDigit(peek())) get();
+        return Token(Token::Type::Float, start, m_beg);
+    }
+
     return Token(Token::Type::Number, start, m_beg);
 }
 

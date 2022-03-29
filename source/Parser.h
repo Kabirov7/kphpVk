@@ -71,19 +71,11 @@ private:
         return Token(Token::Type::String, str);
     }
 
+    Token StrPlusStr(Token l, Token r);
+
     Token StrMinusIntOrFloat(Token l, Token r);
 
-    Token IntOrFloatMinusIntOrFloat(Token l, Token r);
-
-    Token IntOrFloatPlusIntOrFloat(Token l, Token r);
-
-    Token IntOrFloatMultIntOrFloat(Token l, Token r);
-
-    Token IntOrFloatDivIntOrFloat(Token l, Token r);
-
-    Token IntOrFloatPowIntOrFloat(Token l, Token r);
-
-    Token IntOrFloatPercIntOrFloat(Token l, Token r);
+    Token IntOrFloatOPIntOrFloat(Token l, Token r, Token::Type);
 
     Token Assignee(Token l, Token r);
 
