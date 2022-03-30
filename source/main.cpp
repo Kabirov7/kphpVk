@@ -1,7 +1,4 @@
 #include <iostream>
-#include <stdio.h>
-#include <string.h>
-#include <iomanip>
 #include <unordered_map>
 #include "Lexer.h"
 #include "AST.h"
@@ -21,14 +18,9 @@ std::ostream &operator<<(std::ostream &os, const Token::Type &type) {
 
 
 int main() {
-    char c[] = "\"34.3324\" - 324.3";
+    char c[] = "32 - 324.3 - 12 - 32";
     vector<Token> *tokens = new vector<Token>();
     Lexer l = Lexer(c);
-//    for (auto token = l.next();
-//         not token.is_one_of(Token::Type::End, Token::Type::Unexpected);
-//         token = l.next())
-//        cout << token.getType() << "|" << token.getLexeme() << "|" << endl;
-//        tokens->push_back(token);
 
     Parser p = Parser(l, l.next());
     p.parser();

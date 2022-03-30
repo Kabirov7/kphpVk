@@ -19,8 +19,6 @@ stack<Token> Parser::parser() {
         Token::Type currentType = currentToken.getType();
 
         if (IsOperator(currentType)) {
-            std::string_view lexeme = currentToken.getLexeme();
-
             if (operators.empty() ||
                 getPriority(operators.top().getLexeme()[0]) > getPriority(currentToken.getLexeme()[0]) ||
                 operators.top().getLexeme() == currentToken.getLexeme()) {
@@ -96,17 +94,15 @@ void Parser::calculating(stack<Token> tokens) {
                     Token leftToken = counted.top();
                     counted.pop();
                     if (IsStrAndStr(leftToken, rightToken)) {
-                        cout << "str + str" << endl;
                         leftToken = StrPlusStr(leftToken, rightToken);
                     } else if (IsStrAndNum(leftToken, rightToken) || IsStrAndFloat(leftToken, rightToken)) {
-                        cout << "str + int/float" << endl;
                     } else if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
                                IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
                         leftToken = IntOrFloatOPIntOrFloat(leftToken, rightToken, currentToken.getType());
-                        cout << "int/float + int/float" << endl;
                     } else {
                         cout << "ERROR PLUS" << endl;
                     }
+                    cout << leftToken.getLexeme() << endl;
                     counted.push(leftToken);
                     break;
                 }
@@ -116,15 +112,14 @@ void Parser::calculating(stack<Token> tokens) {
                     Token leftToken = counted.top();
                     counted.pop();
                     if (IsStrAndNum(leftToken, rightToken) || IsStrAndFloat(leftToken, rightToken)) {
-                        cout << "str - int/float" << endl;
                         leftToken = StrMinusIntOrFloat(leftToken, rightToken);
                     } else if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
                                IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
-                        cout << "int/float - int/float" << endl;
                         leftToken = IntOrFloatOPIntOrFloat(leftToken, rightToken, currentToken.getType());
                     } else {
                         cout << "ERROR MINUS" << endl;
                     }
+                    cout << leftToken.getLexeme() << endl;
                     counted.push(leftToken);
                     break;
                 }
@@ -135,12 +130,12 @@ void Parser::calculating(stack<Token> tokens) {
                     counted.pop();
                     if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
                         IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
-                        cout << "int/float / int/float" << endl;
                         leftToken = IntOrFloatOPIntOrFloat(leftToken, rightToken, currentToken.getType());
 
                     } else {
                         cout << "ERROR MINUS" << endl;
                     }
+                    cout << leftToken.getLexeme() << endl;
                     counted.push(leftToken);
                     break;
                 }
@@ -151,11 +146,12 @@ void Parser::calculating(stack<Token> tokens) {
                     counted.pop();
                     if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
                         IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
-                        cout << "int/float * int/float" << endl;
                         leftToken = IntOrFloatOPIntOrFloat(leftToken, rightToken, currentToken.getType());
                     } else {
                         cout << "ERROR ASTERISK" << endl;
                     }
+                    cout << leftToken.getLexeme() << endl;
+                    counted.push(leftToken);
                     break;
                 }
                 case Token::Type::Percent: {
@@ -165,11 +161,11 @@ void Parser::calculating(stack<Token> tokens) {
                     counted.pop();
                     if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
                         IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
-                        cout << "int/float % int/float" << endl;
                         leftToken = IntOrFloatOPIntOrFloat(leftToken, rightToken, currentToken.getType());
                     } else {
                         cout << "ERROR PERCENT" << endl;
                     }
+                    cout << leftToken.getLexeme() << endl;
                     counted.push(leftToken);
                     break;
                 }
@@ -180,11 +176,11 @@ void Parser::calculating(stack<Token> tokens) {
                     counted.pop();
                     if (IsNumAndNum(leftToken, rightToken) || IsFloatAndFloat(leftToken, rightToken) ||
                         IsNumAndFloat(leftToken, rightToken) || IsNumAndFloat(rightToken, leftToken)) {
-                        cout << "int/float ^ int/float" << endl;
                         leftToken = IntOrFloatOPIntOrFloat(leftToken, rightToken, currentToken.getType());
                     } else {
                         cout << "ERROR POW" << endl;
                     }
+                    cout << leftToken.getLexeme() << endl;
                     counted.push(leftToken);
                     break;
                 }
@@ -205,6 +201,7 @@ void Parser::calculating(stack<Token> tokens) {
             tokens.pop();
         }
     }
+    return;
 }
 
 Token Parser::StrPlusStr(Token l, Token r) {
